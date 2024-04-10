@@ -2,6 +2,8 @@
 # Date: 21 March 2024 
 # LICENSE: GNU GPLv3
 ###############################################################################
+from time import perf_counter
+start = perf_counter()
 from os import path
 from typing import NoReturn
 import pandas as pd
@@ -73,7 +75,7 @@ def main(traindata: pd.DataFrame,
         .to_csv(path.join(filepath, 'toxic_prob.csv'))
     
     thresholds = np.linspace(-0.1,0.1,10001)
-    best_threshold = (0, -0.012889200000000003)
+    best_threshold = (0, -0.03984)
     f1 = 0
     best_preds = None
     scores = []
@@ -82,7 +84,7 @@ def main(traindata: pd.DataFrame,
                                           not_toxic_prob,
                                           testdata_p, 
                                           threshold=best_threshold[1])
-    F_score_beta = 0.5
+    F_score_beta = 1
 
     real = testdata_p['label'].values
     # gridsearch = find optimal threshold value
@@ -127,4 +129,7 @@ if __name__ == "__main__":
                        quoting=3, index_col = 'id')
     train = pd.read_csv(path.join(filepath, "train_2024.csv"), \
                         quoting=3, index_col = 'id')
-    main(train, dev)
+    main(train, dev, gridsearch=False, recalculate_preprocessing=True)
+end = perf_counter()
+runtime = end - start
+print(f'Runtime of script: {runtime}')
