@@ -129,7 +129,7 @@ if __name__ == "__main__":
                        quoting=3, index_col = 'id')
     train = pd.read_csv(path.join(filepath, "train_2024.csv"), \
                         quoting=3, index_col = 'id')
-    main(train, dev, gridsearch=False, recalculate_preprocessing=True)
+    main(train, train, gridsearch=False, recalculate_preprocessing=True)
 end = perf_counter()
 runtime = end - start
 print(f'Runtime of script: {runtime}')
